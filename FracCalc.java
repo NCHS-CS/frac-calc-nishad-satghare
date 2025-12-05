@@ -89,21 +89,60 @@ public class FracCalc {
          operator = parser.next();
          secondFraction = parser.next();
       }
-
-
-      
-      return "Op:" + operator + " " + "Whole:" + getWhole(secondFraction) + " ";
+      int whole = getWhole(secondFraction);
+      int numerator = getNumerator(secondFraction);
+      int denominator = getDenominator(secondFraction);
+      if(numerator < 0 && denominator < 0){
+         numerator *= -1;
+         denominator *= -1;
+      }
+      if(numerator > 0 && denominator < 0){
+         numerator *= -1;
+         denominator *= -1;
+      }
+      return "Op:" + operator + " " + "Whole:" + whole + " " + "Num:" + numerator + " " + "Den:" + denominator;
       } 
 
    public static int getWhole(String fraction){
-      int whole = 0; 
-      if(fraction.contains("_")){
+      int whole = 0;
+      if(fraction.contains("_") && fraction.contains("/")){
+         return Integer.valueOf(fraction.substring(0, fraction.indexOf("_")));
+      } 
+      else if(fraction.contains("/")){
+         return Math.round(((Integer.valueOf(fraction.substring((fraction.indexOf("/") - 1), fraction.indexOf("/")))) / (getDenominator(fraction))));
+      }
+      else if(fraction.contains("_")){
          return Integer.valueOf(fraction.substring((fraction.indexOf("_") - 1), fraction.indexOf("_")));
       }
       else{
          return Integer.valueOf(fraction);
       } 
    }
+
+   public static int getNumerator(String fraction){
+      int numerator = 0; 
+      if(fraction.contains("_") && fraction.contains("/")){
+         return Integer.valueOf(fraction.substring((fraction.indexOf("_") + 1), fraction.indexOf("/")));
+      }
+      else if(fraction.contains("/")){
+         return Integer.valueOf(fraction.substring(0, fraction.indexOf("/")));
+      }
+      else{
+         return 0;
+      } 
+   }
+
+   public static int getDenominator(String fraction){
+      int denominator = 0; 
+      if(fraction.contains("/")){
+         return Integer.valueOf(fraction.substring((fraction.indexOf("/") + 1)));
+      }
+      else{
+         return 1;
+      } 
+   }
+
+
    
    
    // Returns a string that is helpful to the user about how
