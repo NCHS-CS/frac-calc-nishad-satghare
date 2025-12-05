@@ -1,5 +1,5 @@
-// Student Name
-// Period X
+// Nishad
+// Period 6
 // Fraction Calculator Project
 
 import java.util.*;
@@ -44,9 +44,9 @@ public class FracCalc {
    // Prompt the user with a simple, "Enter: " and get the line of input.
    // Return the full line that the user typed in.
    public static String getInput() {
-      // TODO: Implement this method
-       return "quit";
-
+      System.out.print("Enter: ");
+      String input = console.nextLine();
+      return input;
    }
    
    // processCommand will process every user command except for "quit".
@@ -80,18 +80,38 @@ public class FracCalc {
    //        2 1/8
    //        2 1/4
    public static String processExpression(String input) {
-      // TODO: implement this method!
-    
-        return "reduced result of expression";
+      Scanner parser = new Scanner(input);
+      String firstFraction = "";
+      String operator = "";
+      String secondFraction = "";
+      while(parser.hasNext()){
+         firstFraction = parser.next();
+         operator = parser.next();
+         secondFraction = parser.next();
+      }
 
+
+      
+      return "Op:" + operator + " " + "Whole:" + getWhole(secondFraction) + " ";
+      } 
+
+   public static int getWhole(String fraction){
+      int whole = 0; 
+      if(fraction.contains("_")){
+         return Integer.valueOf(fraction.substring((fraction.indexOf("_") - 1), fraction.indexOf("_")));
+      }
+      else{
+         return Integer.valueOf(fraction);
+      } 
    }
+   
    
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
       // TODO: Update this help text!
      
-      String help = "You must change this text.\n";
+      String help = "Tech Support: \n";
       help += "Students, you need to provide actual helpful text here!";
       
       return help;
