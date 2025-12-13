@@ -89,38 +89,37 @@ public class FracCalc {
          operator = parser.next();
          secondFraction = parser.next();
       }
-      int whole = getWhole(secondFraction);
-      int numerator = getNumerator(secondFraction);
-      int denominator = getDenominator(secondFraction);
-      if(numerator < 0 && denominator < 0){
-         numerator *= -1;
-         denominator *= -1;
-      }
-      if(numerator > 0 && denominator < 0){
-         numerator *= -1;
-         denominator *= -1;
-      }
-      return "Op:" + operator + " " + "Whole:" + whole + " " + "Num:" + numerator + " " + "Den:" + denominator;
+
+      int whole1 = getWhole(firstFraction);
+      int numerator1 = getNumerator(firstFraction);
+      int denominator1 = getDenominator(firstFraction);
+
+      int whole2 = getWhole(secondFraction);
+      int numerator2 = getNumerator(secondFraction);
+      int denominator2 = getDenominator(secondFraction);
+
+      int impropNum1 = getImproperNumerator(whole1, numerator1, denominator1);
+      int impropNum2 = getImproperNumerator(whole2, numerator2, denominator2);
+
+      return (doMath(impropNum1, denominator1, operator, impropNum2, denominator2));
       } 
 
    public static int getWhole(String fraction){
-      int whole = 0;
       if(fraction.contains("_") && fraction.contains("/")){
          return Integer.valueOf(fraction.substring(0, fraction.indexOf("_")));
-      } 
+      }  
       else if(fraction.contains("/")){
-         return Math.round(((Integer.valueOf(fraction.substring((fraction.indexOf("/") - 1), fraction.indexOf("/")))) / (getDenominator(fraction))));
+         return 0;  
       }
       else if(fraction.contains("_")){
-         return Integer.valueOf(fraction.substring((fraction.indexOf("_") - 1), fraction.indexOf("_")));
+         return Integer.valueOf(fraction.substring(0, fraction.indexOf("_")));
       }
       else{
          return Integer.valueOf(fraction);
       } 
    }
 
-   public static int getNumerator(String fraction){
-      int numerator = 0; 
+   public static int getNumerator(String fraction){ 
       if(fraction.contains("_") && fraction.contains("/")){
          return Integer.valueOf(fraction.substring((fraction.indexOf("_") + 1), fraction.indexOf("/")));
       }
@@ -133,7 +132,6 @@ public class FracCalc {
    }
 
    public static int getDenominator(String fraction){
-      int denominator = 0; 
       if(fraction.contains("/")){
          return Integer.valueOf(fraction.substring((fraction.indexOf("/") + 1)));
       }
@@ -141,6 +139,74 @@ public class FracCalc {
          return 1;
       } 
    }
+
+   public static int getGCD(int a, int b){
+      int gcd = 1;
+      for(int i = 1; i <= Math.min(a, b); i++){
+         if(a % i == 0 && b % i == 0){
+            gcd = i;
+         }
+      }
+      return gcd;
+   }
+
+   public static int getImproperNumerator(int whole, int numerator, int denominator){
+      if(whole < 0){
+         return (whole * denominator) - numerator;
+      }
+      return (whole * denominator) + numerator;
+   }
+
+   public static String doMath(int num1, int den1, String op, int num2, int den2){
+      int finalNum = 0;
+      int finalDen = 0;
+      if(op.equals("+")){
+         finalNum = (num1 * den2) + (num2 * den1);
+         finalDen = den1 * den2;
+      }
+      else if(op.equals("-")){
+         finalNum = (num1 * den2) - (num2 * den1);
+         finalDen = den1 * den2;
+      }
+      else if (op.equals("*")){
+         finalNum = num1 * num2;
+         finalDen = den1 * den2;
+      }
+      else if (op.equals("/")){
+         finalNum = num1 * den2;
+         finalDen = den1 * num2;
+      }
+      return getFormattedAnswer(finalNum, finalDen);
+   }
+
+   public static String getFormattedAnswer(int numerator, int denominator){
+      // checking to make sure denominator is positive
+      if(denominator < 0){
+         numerator *= -1;
+         denominator *= -1;
+      }
+
+      // Using the Greatest Common Divisor(GCD) to reduce the fraction
+      int gcd = getGCD(Math.abs(numerator), Math.abs(denominator));
+      numerator /= gcd;
+      denominator /= gcd;
+      // Calculate whole and remainder 
+      int whole = numerator / denominator;
+      int remainder = numerator % denominator;
+
+      // Formatting and returning the answer as a string
+      if(remainder == 0){
+         return Integer.toString(whole);
+      }
+      else if (whole == 0){
+         return remainder + "/" + denominator;
+      }
+      else{
+         return whole + " " + Math.abs(remainder) + "/" + denominator;
+
+      }
+   }
+
 
 
    
