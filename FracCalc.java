@@ -109,6 +109,11 @@ public class FracCalc {
       int numerator2 = getNumerator(secondFraction);
       int denominator2 = getDenominator(secondFraction);
 
+      // Handling division by zero exception
+      if(denominator1 == 0 || denominator2 == 0){
+         return "Error: You Cannot Divide By Zero!";
+      }
+
       // Converting both fractions into improper fractions for calculation
       int impropNum1 = getImproperNumerator(whole1, numerator1, denominator1);
       int impropNum2 = getImproperNumerator(whole2, numerator2, denominator2);
@@ -238,17 +243,14 @@ public class FracCalc {
       }
       // Performing division
       else if (op.equals("/")){
+         finalNum = num1 * den2;
+         finalDen = den1 * num2;
+         // Handling division by zero
          if(num2 == 0){
-            // Handling division by zero case
-            // Citation for the exception usage: used oracle's java documentation
-            // https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.htestml
-            throw new IllegalArgumentException("Cannot divide by zero.");
-         }
-         else{
-            finalNum = num1 * den2;
-            finalDen = den1 * num2;
+            return "Error: You Cannot Divide By Zero!";
          }
       }
+      
       // Using the helper method getFormattedAnswer to format the answer properly.
       return getFormattedAnswer(finalNum, finalDen);
    }
@@ -289,7 +291,6 @@ public class FracCalc {
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
-     
       String help = "Tech Support: \n";
       help += "This calculator performs arithmetic operations on fractions.\n\n";
       help += "INPUT FORMAT:\n";
