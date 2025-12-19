@@ -238,8 +238,16 @@ public class FracCalc {
       }
       // Performing division
       else if (op.equals("/")){
-         finalNum = num1 * den2;
-         finalDen = den1 * num2;
+         if(num2 == 0){
+            // Handling division by zero case
+            // Citation for the exception usage: used oracle's java documentation
+            // https://docs.oracle.com/javase/8/docs/api/java/lang/IllegalArgumentException.htestml
+            throw new IllegalArgumentException("Cannot divide by zero.");
+         }
+         else{
+            finalNum = num1 * den2;
+            finalDen = den1 * num2;
+         }
       }
       // Using the helper method getFormattedAnswer to format the answer properly.
       return getFormattedAnswer(finalNum, finalDen);
@@ -281,7 +289,6 @@ public class FracCalc {
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
-      // TODO: Update this help text!
      
       String help = "Tech Support: \n";
       help += "This calculator performs arithmetic operations on fractions.\n\n";
