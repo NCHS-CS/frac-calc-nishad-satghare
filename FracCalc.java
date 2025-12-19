@@ -1,10 +1,14 @@
-// Nishad
+// Nishad Satghare
+// AP Computer Science A
 // Period 6
-// Fraction Calculator Project
-import java.util.*;
+// Fraction Calculator Project: 
 // This project is a fraction calculator that takes in a user input with two fractions and an operator. 
-// The program will return the result in the most efficient form as a mixed or whole number.
-// The program is designed to handle a variety of complexities and acts as a simple, yet effective tool for fraction calculations.
+// The program will return the result in the most reduced form as a mixed or whole number.
+// The program is designed to handle a variety of complexities and acts as a simple, yet effective tool for fractional calculations.
+
+// import the util package
+import java.util.*;
+
 public class FracCalc {
 
    // It is best if we have only one console object for input
@@ -111,7 +115,7 @@ public class FracCalc {
 
       // Performing the mathematical operation using helper methods and returning the result
       return (doMath(impropNum1, denominator1, operator, impropNum2, denominator2));
-      } 
+   } 
 
    // This method will get the whole number part of a string fraction
    // Parameter: fraction - a string value that represents the fraction input.
@@ -179,7 +183,7 @@ public class FracCalc {
    // Parameters: a and b (both integers)
    // Returns: the Greatest Common Divisor(GCD) of the two integers as an integer.
    public static int getGCD(int a, int b){
-      // Start with one as thats the smalles possible GCD
+      // Start with one as thats the smallest possible GCD
       int gcd = 1;
       // Loop through all possible GCDs from 1 to the smaller of the two numbers
       for(int i = 1; i <= Math.min(a, b); i++){
@@ -210,67 +214,88 @@ public class FracCalc {
       }
    }
 
+   // This method will perform the materical operations with the two fractions 
+   // Parameters: numerator and denominator for both fractions, and the operator (all strings)
+   // Returns: the result of the operation as a string (formatted with the use of a helper method)
    public static String doMath(int num1, int den1, String op, int num2, int den2){
+      // Initializing variables for the final numerator and denominator
       int finalNum = 0;
       int finalDen = 0;
+      // Performing addition
       if(op.equals("+")){
          finalNum = (num1 * den2) + (num2 * den1);
          finalDen = den1 * den2;
       }
+      // Performing subtraction
       else if(op.equals("-")){
          finalNum = (num1 * den2) - (num2 * den1);
          finalDen = den1 * den2;
       }
+      // Performing multiplication
       else if (op.equals("*")){
          finalNum = num1 * num2;
          finalDen = den1 * den2;
       }
+      // Performing division
       else if (op.equals("/")){
          finalNum = num1 * den2;
          finalDen = den1 * num2;
       }
+      // Using the helper method getFormattedAnswer to format the answer properly.
       return getFormattedAnswer(finalNum, finalDen);
    }
 
    // This method will format the final answer into a string
    // Parameters: numerator and denominator (both integers)
+   // Returns: the final answer as a formatted string.
    public static String getFormattedAnswer(int numerator, int denominator){
       // making sure denominator is positive
       if(denominator < 0){
          numerator *= -1;
          denominator *= -1;
       }
-      // Using the Greatest Common Divisor(GCD) to reduce the fraction
+      // Getting Greatest Common Divisor(GCD from the helper method getGCD.
+      // Using the GCD) to reduce the fraction
       int gcd = getGCD(Math.abs(numerator), Math.abs(denominator));
       numerator /= gcd;
       denominator /= gcd;
+
       // Calculate whole and remainder 
       int whole = numerator / denominator;
       int remainder = numerator % denominator;
-      // Formatting and returning the answer as a string
+
+      // If no remainder, return the whole number
       if(remainder == 0){
          return Integer.toString(whole);
       }
+      // If no whole number, return the fraction
       else if (whole == 0){
          return remainder + "/" + denominator;
       }
+      // If both whole number and remainder, return the mixed number
       else{
          return whole + " " + Math.abs(remainder) + "/" + denominator;
       }
    }
 
-
-
-   
-   
    // Returns a string that is helpful to the user about how
    // to use the program. These are instructions to the user.
    public static String provideHelp() {
       // TODO: Update this help text!
      
       String help = "Tech Support: \n";
-      help += "Students, you need to provide actual helpful text here!";
-      
+      help += "This calculator performs arithmetic operations on fractions.\n\n";
+      help += "INPUT FORMAT:\n";
+      help += "  - Whole numbers: 5\n";
+      help += "  - Fractions: 3/4\n";
+      help += "  - Mixed numbers: 2_1/4 (use underscore, NO spaces)\n";
+      help += "  - Negative numbers: -2_1/4 or -3/4\n\n";
+      help += "OPERATORS: + (add), - (subtract), * (multiply), / (divide)\n\n";
+      help += "EXAMPLES:\n";
+      help += "  1/2 + 1/4  ->  3/4\n";
+      help += "  2_1/2 * 3  ->  7 1/2\n";
+      help += "  5 - 1_1/4  ->  3 3/4\n\n";
+      help += "Type 'quit' to exit the program.";
       return help;
    }
 }
